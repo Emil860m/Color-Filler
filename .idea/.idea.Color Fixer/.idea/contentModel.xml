@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\frede\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_Color Fixer.-2045436349.00" t="ExcludeRecursive" />
+    <e p="C:\Users\frede\Documents\Game Dir\Unity Projects\Color Filler" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Art" t="Include">
+          <e p="Shaders Materials" t="Include">
+            <e p="HSVDefault.shader" t="Include" />
+          </e>
+        </e>
+        <e p="CreativeSpore" t="Include">
+          <e p="SuperTilemapEditor" t="Include">
+            <e p="changelog.txt" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="Data" t="Include">
+                <e p="ParameterContainer.cs" t="Include" />
+              </e>
+              <e p="MapPathFinding" t="Include">
+                <e p="MapPathFinding.cs" t="Include" />
+                <e p="PathFinding.cs" t="Include" />
+                <e p="PathfindingBehaviour.cs" t="Include" />
+              </e>
+              <e p="Tilemap" t="Include">
+                <e p="Brush" t="Include">
+                  <e p="A2X2Brush.cs" t="Include" />
+                  <e p="AnimBrush.cs" t="Include" />
+                  <e p="BrushBehaviour.cs" t="Include" />
+                  <e p="BrushFortySeven.cs" t="Include" />
+                  <e p="BrushUtil.cs" t="Include" />
+                  <e p="CarpetBrush.cs" t="Include" />
+                  <e p="IBrush.cs" t="Include" />
+                  <e p="RandomBrush.cs" t="Include" />
+                  <e p="RoadBrush.cs" t="Include" />
+                  <e p="TilesetBrush.cs" t="Include" />
+                </e>
+                <e p="EditorGlobalSettings.cs" t="Include" />
+                <e p="SortingLayerAttribute.cs" t="Include" />
+                <e p="STETilemap.cs" t="Include" />
+                <e p="TileDataAttribute.cs" t="Include" />
+                <e p="TilemapChunk.cs" t="Include" />
+                <e p="TilemapChunk_Collider.cs" t="Include" />
+                <e p="TilemapChunk_Renderer.cs" t="Include" />
+                <e p="TilemapChunk_TileObjFactory.cs" t="Include" />
+                <e p="TilemapGroup.cs" t="Include" />
+                <e p="TileObjectBehaviour.cs" t="Include" />
+                <e p="TileObjMesh.cs" t="Include" />
+                <e p="Tileset.cs" t="Include" />
+              </e>
+              <e p="Utils" t="Include">
+                <e p="EditorCompatibilityUtils.cs" t="Include" />
+                <e p="EditorUtils.cs" t="Include" />
+                <e p="GizmosEx.cs" t="Include" />
+                <e p="HandlesEx.cs" t="Include" />
+                <e p="TilemapDrawingUtils.cs" t="Include" />
+                <e p="TilemapUtils.cs" t="Include" />
+                <e p="TilemapVertexPaintUtils.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+        <e p="RTS_Camera" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="RTS_Camera.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="BrokenBlockController.cs" t="Include" />
+          <e p="ControlScene.cs" t="Include" />
+          <e p="EndScene.cs" t="Include" />
+          <e p="GameManager.cs" t="Include" />
+          <e p="HoleController.cs" t="Include" />
+          <e p="LvlCounter.cs" t="Include" />
+          <e p="LvlSelect.cs" t="Include" />
+          <e p="MenuHoleController.cs" t="Include" />
+          <e p="MenuManager.cs" t="Include" />
+          <e p="MoverController.cs" t="Include" />
+          <e p="PerfectPixelCamera.cs" t="Include" />
+          <e p="PieceController.cs" t="Include" />
+          <e p="PlayerController.cs" t="Include" />
+          <e p="ProgressViewer.cs" t="Include" />
+          <e p="SoundManager.cs" t="Include" />
+        </e>
+        <e p="Sharp Text Mesh" t="Include">
+          <e p="Documentation.txt" t="Include" />
+          <e p="Script" t="Include">
+            <e p="SharpText.cs" t="Include" />
+            <e p="SharpText_Demo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Color Fixer.sln" t="IncludeFlat" />
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+    </e>
+  </component>
+</project>
