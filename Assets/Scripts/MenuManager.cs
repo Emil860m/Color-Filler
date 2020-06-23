@@ -72,6 +72,11 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
+        if (PlayerPrefs.GetInt("Progress") < 1)
+        {
+            PlayerPrefs.SetInt("Progress", 1);
+        }
+
         Application.targetFrameRate = 60;
         
         StartCoroutine(nameof(colorChange));
