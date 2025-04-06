@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+
+public class HttpResponse
+{
+    public string level { get; set; }
+    public decimal entropy { get; set; }
+
+}
+
 
 public class MenuManager : MonoBehaviour
 {
@@ -72,6 +81,8 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
+        StartCoroutine(RequestApi("https://google.com", HandleResponses));
+        // getRequest("http://www.google.com");
         if (PlayerPrefs.GetInt("Progress") < 1)
         {
             PlayerPrefs.SetInt("Progress", 1);
@@ -93,7 +104,53 @@ public class MenuManager : MonoBehaviour
         StartLvlAnim();
 
     }
-    
+
+    public IEnumerator RequestApi(string url, System.Action<List<HttpResponse>> callback)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Debug.LogError($"Request failed: {request.error}");
+                callback?.Invoke(null);
+                yield break;
+            }
+
+            string json = request.downloadHandler.text;
+
+            // Wrap array for JsonUtility
+            string wrappedJson = "{ \"responses\": " + json + " }";
+
+            HttpResponseList responseList = JsonUtility.FromJson<HttpResponseList>(wrappedJson);
+
+            callback?.Invoke(responseList.responses);
+        }
+    }
+
+    // Wrapper class for deserialization with JsonUtility
+    [System.Serializable]
+    private class HttpResponseList
+    {
+        public List<HttpResponse> responses;
+    }
+
+    private void HandleResponses(List<HttpResponse> responses)
+    {
+        if (responses == null)
+        {
+            Debug.Log("No responses received.");
+            return;
+        }
+
+        foreach (var response in responses)
+        {
+
+            Debug.Log($"Status: {response}");
+        }
+    }
+
     private void StartLvlAnim()
     {
         //activate fader
@@ -148,6 +205,10 @@ public class MenuManager : MonoBehaviour
     
     public void NewGame()
     {
+        List<string> levels = new List<string>();
+        levels.Add("0;0;0;4p;0|0;1;1;1a;4a|0;1;1b;1c;4b|4c;1;1;1p;1|0;0;0;1;0");
+        levels.Add("1;1;0|1;1a;0|1p;4a;4p");
+        levelManager.Instance.SetLevelStrings(levels);
         StartCoroutine(nameof(NewGameCo));
     }
     private IEnumerator NewGameCo()

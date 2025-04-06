@@ -49,3 +49,30 @@ MonoBehaviour:
   gameHueMaterial: {fileID: 2100000, guid: 05bee49a2a9e7a54da53af9305db8806, type: 2}
   gameHue: 0
   activeHueControl: 0
+  transInLvl: []
+  arrFinished: 
+  lvlTrans: {fileID: 0}
+  lvlStr: 
+  playerObj: {fileID: 0}
+  squareObj: {fileID: 8263758304527257610, guid: b1010ae8ab26e5f48beed41f62ea865e,
+    type: 3}
+  holeObj: {fileID: 8764420922241255070, guid: 2fa113c4e2145f245a0cee9e79ae6d4c, type: 3}
+  redHoleObj: {fileID: 7149419052353810065, guid: 72a48cec1b036b34aab6827a3c9c929c,
+    type: 3}
+  yellowHoleObj: {fileID: 5306701852592867074, guid: 5fbe54c8db7c063418e1ec7464da7213,
+    type: 3}
+  greenHoleObj: {fileID: 778469764031404887, guid: d1ad2756452557545ba921d723968a15,
+    type: 3}
+  blueHoleObj: {fileID: 4401405954431581052, guid: c318341e6037b3048b66d95d18947258,
+    type: 3}
+  redBlockObj: {fileID: 3778116350922499696, guid: f42346142e581d54f91941b0d1f4f335,
+    type: 3}
+  yellowBlockObj: {fileID: 7166961135778035953, guid: 6b61d2ca53264434e91aba27e31635b3,
+    type: 3}
+  greenBlockObj: {fileID: 1882231903836227287, guid: 62d6ad72028d47f4e911ef16b7cba9d3,
+    type: 3}
+  blueBlockObj: {fileID: 7463122485510243126, guid: 2ed1dc007f39ed14da333f604a7fa340,
+    type: 3}
+  lvlSelector: 0
+  camera: {fileID: 0}
+  undoHelpText: {fileID: 0}

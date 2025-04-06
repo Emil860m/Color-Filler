@@ -32,6 +32,18 @@ public class GameManager : MonoBehaviour
 
     public bool[] arrFinished;
     public Transform lvlTrans;
+    public string lvlStr;
+    public UnityEngine.Object playerObj;
+    public UnityEngine.Object squareObj;
+    public UnityEngine.Object holeObj;
+    public UnityEngine.Object redHoleObj; 
+    public UnityEngine.Object yellowHoleObj; 
+    public UnityEngine.Object greenHoleObj; 
+    public UnityEngine.Object blueHoleObj; 
+    public UnityEngine.Object redBlockObj; 
+    public UnityEngine.Object yellowBlockObj; 
+    public UnityEngine.Object greenBlockObj; 
+    public UnityEngine.Object blueBlockObj; 
 
     private int LvlNumber;
 
@@ -43,6 +55,8 @@ public class GameManager : MonoBehaviour
     private PlayerController playerController;
 
     public GameObject undoHelpText;
+
+    private int levelsLeft;
 
 
     private void Awake()
@@ -62,20 +76,98 @@ public class GameManager : MonoBehaviour
             Debug.Log("Unable to find lvl number in scene name");
         }
 
+        lvlStr = levelManager.Instance.getlvlStr();
+        levelsLeft = levelManager.Instance.levelsLeft();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         playerController.delayInput = true;
         playerController.input = true;
 
         m_soundManager = GameObject.Find("Sound Manager").GetComponent<SoundManager>();
-
-        lvlTrans = GameObject.Find("Lvl Prefabs").transform;
-        foreach (Transform child in lvlTrans)
+        GameObject lvl = GameObject.Find("Lvl Prefabs");
+        lvlTrans = lvl.transform;
+        if (lvlStr != null && lvlStr != "")
         {
-            transInLvl.Add(child);
+
+            int startX = -1;
+            int startY = -1;
+            int xcounter = 2;
+            int holeCount = 0;
+            int blockCount = 0;
+            List<UnityEngine.Object> holes = new List<UnityEngine.Object>();
+            holes.Add(redHoleObj);
+            holes.Add(blueHoleObj);
+            holes.Add(yellowHoleObj);
+            holes.Add(greenHoleObj);
+            List<UnityEngine.Object> blocks = new List<UnityEngine.Object>();
+            blocks.Add(redBlockObj);
+            blocks.Add(blueBlockObj);
+            blocks.Add(yellowBlockObj);
+            blocks.Add(greenBlockObj);
+            foreach (var row in lvlStr.Split('|'))
+            {
+                int ycounter = 0;
+                foreach (var cell in row.Split(';'))
+                {
+                    if (cell.StartsWith("1"))
+                    {
+                        GameObject tile = Instantiate(squareObj) as GameObject;
+                        tile.transform.parent = lvlTrans.transform;
+                        Vector3 pos = new Vector3(startY + ycounter, startX + xcounter, 0);
+                        tile.transform.localPosition = pos;
+                        transInLvl.Add(tile.transform);
+                        if (cell.Length > 1)
+                        {
+                            GameObject block;
+                            if (cell.EndsWith("p"))
+                            {
+                                block = GameObject.Find("Player");
+                            }
+                            else
+                            {
+                                block = Instantiate(blocks[blockCount]) as GameObject;
+                                blockCount++;
+                            }
+                            block.transform.parent = lvlTrans.transform;
+                            block.transform.localPosition = pos;
+                            transInLvl.Add(block.transform);
+                        }
+
+                    }
+                    else if (cell.StartsWith("2"))
+                    {
+                        // disappearing block
+                    }
+                    else if (cell.StartsWith("4"))
+                    {
+                        GameObject tile;
+                        if (cell.EndsWith("p"))
+                        {
+                            tile = Instantiate(holeObj) as GameObject;
+                        }
+                        else
+                        {
+                            tile = Instantiate(holes[holeCount]) as GameObject;
+                            holeCount++;
+                        }
+                        tile.transform.parent = lvlTrans.transform;
+                        Vector3 pos = new Vector3(startY + ycounter, startX + xcounter, 0);
+                        tile.transform.localPosition = pos;
+                        transInLvl.Add(tile.transform);
+                    }
+                    ycounter++;
+                }
+                xcounter--;
+            }
+        }
+        else
+        {
+            foreach (Transform child in lvlTrans)
+            {
+                transInLvl.Add(child);
+            }
         }
 
         arrFinished = new bool[transInLvl.Count];
-
         StartLvlAnim();
         playerController.retryCounter = GameObject.FindGameObjectWithTag("Retry Counter").GetComponent<Text>();
 
@@ -84,6 +176,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(DelayInput(arrFinished));
         }
     }
+
 
 
     private void Start()
@@ -118,7 +211,6 @@ public class GameManager : MonoBehaviour
                     transInLvl.Add(child);
                 }
             }
-
 
             for (int u = 0; u < transInLvl.Count; u++)
             {
@@ -354,7 +446,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(m_transitionAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         //load next lvl
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (levelsLeft > 0)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        else
+            // todo: show questionnaire
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
     }
 
     public void SkipLvl()
