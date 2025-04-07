@@ -36,7 +36,7 @@ public class levelManager : MonoBehaviour
 
     public string getlvlStr()
     {
-        Debug.Log(levels.Count);
+        if (levelCount >= levels.Count) return "";
         string lvl = levels[levelCount];
         levelCount++;
         return lvl;
