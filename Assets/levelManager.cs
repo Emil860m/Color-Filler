@@ -5,10 +5,10 @@ using UnityEngine;
 public class levelManager : MonoBehaviour
 {
     private static levelManager _instance;
-    public static levelManager Instance { get { return _instance; } }
+    public static levelManager Instance { get { if (_instance != null) return _instance; else return new levelManager(); } }
 
 
-    public List<string> levels;
+    public List<string> levels = new List<string>();
     private int levelCount = 0;
     // Start is called before the first frame update
     private void Awake()
@@ -32,6 +32,10 @@ public class levelManager : MonoBehaviour
     public int levelsLeft()
     {
         return levels.Count - levelCount;
+    }
+    public void resetLvl()
+    {
+        levelCount--;
     }
 
     public string getlvlStr()

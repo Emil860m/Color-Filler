@@ -207,6 +207,7 @@ public class MenuManager : MonoBehaviour
     {
         List<string> levels = new List<string>();
         levels.Add("0;0;0;4p;0|0;1;1;1a;4a|0;1;1b;1c;4b|4c;1;1;1p;1|0;0;0;1;0");
+        levels.Add("0;0;0;4p;0|0;1;1;1a;4a|0;1;1b;1c;4b|4c;1;1;1p;1|0;0;0;1;0");
         levelManager.Instance.SetLevelStrings(levels);
         StartCoroutine(nameof(NewGameCo));
     }

@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviour
     public UnityEngine.Object redBlockObj; 
     public UnityEngine.Object yellowBlockObj; 
     public UnityEngine.Object greenBlockObj; 
-    public UnityEngine.Object blueBlockObj; 
+    public UnityEngine.Object blueBlockObj;
+    public GameObject miniPXI;
 
     private int LvlNumber;
 
@@ -512,6 +513,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ResetLvl()
     {
+        levelManager.Instance.resetLvl();
         Debug.Log("reseting lvl");
 
         GameObject.Find("Player").GetComponent<PlayerController>().delayInput = false;
@@ -549,10 +551,11 @@ public class GameManager : MonoBehaviour
 
         //load next lvl
         if (levelsLeft > 0)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         else
             // todo: show questionnaire
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            miniPXI.SetActive(true);
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
     }
 
