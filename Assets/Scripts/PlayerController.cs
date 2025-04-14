@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     public List<int> movedPieces = new List<int>();
     private GameObject[] holes;
     public Text retryCounter;
+    public int moveCounter = 0;
+    public int resetCounter = 0;
 
 
     public bool onlyRetry;
@@ -442,6 +444,7 @@ public class PlayerController : MonoBehaviour
 
     private void SaveMove()
     {
+        moveCounter++;
         prevMoves.Add(m_move);
     }
 

@@ -12,6 +12,7 @@ using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 using System.Text.RegularExpressions;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
     public UnityEngine.Object greenBlockObj; 
     public UnityEngine.Object blueBlockObj;
     public GameObject miniPXI;
+    public GameObject rating;
+    public Stopwatch stopwatch;
 
     private int LvlNumber;
 
@@ -67,15 +70,16 @@ public class GameManager : MonoBehaviour
             Regex regex = new Regex("[0-9]+");
             Match match = regex.Match(SceneManager.GetActiveScene().name);
             LvlNumber = Convert.ToInt32(match.Value);
-            Debug.Log("lvl number is " + LvlNumber);
+            UnityEngine.Debug.Log("lvl number is " + LvlNumber);
 
 
             gameHueMaterial.SetFloat("_HueShift", 1.5f * LvlNumber);
         }
         catch
         {
-            Debug.Log("Unable to find lvl number in scene name");
+            UnityEngine.Debug.Log("Unable to find lvl number in scene name");
         }
+        stopwatch = Stopwatch.StartNew();
 
         lvlStr = levelManager.Instance.getlvlStr();
         levelsLeft = levelManager.Instance.levelsLeft();
@@ -268,7 +272,7 @@ public class GameManager : MonoBehaviour
             if (i != lowY)
                 lvlstrFromLevel += "|";
         }
-        Debug.Log(lvlstrFromLevel);
+        UnityEngine.Debug.Log(lvlstrFromLevel);
 
         arrFinished = new bool[transInLvl.Count];
         StartLvlAnim();
@@ -289,7 +293,7 @@ public class GameManager : MonoBehaviour
 
     public void LvlCompletionCheck()
     {
-        Debug.Log("Checking LVL COMPLETE");
+        UnityEngine.Debug.Log("Checking LVL COMPLETE");
         //put pieces in scene into an array
         GameObject[] m_holes = GameObject.FindGameObjectsWithTag("Holes");
         //set blank holes to complete
@@ -341,7 +345,7 @@ public class GameManager : MonoBehaviour
 
             if (playerController.remainingUndoes <= 0 || m_holes.All(hole => hole.GetComponent<HoleController>().filled))
             {
-                Debug.Log("Failed lvl test");
+                UnityEngine.Debug.Log("Failed lvl test");
 
                 //reset current lvl
                 StartCoroutine(nameof(ResetLvl));
@@ -372,7 +376,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("reseting lvl");
+            UnityEngine.Debug.Log("reseting lvl");
             m_soundManager.PlayFailSound();
 
             StartCoroutine(nameof(ResetLvl));
@@ -420,7 +424,7 @@ public class GameManager : MonoBehaviour
                 }
                 catch
                 {
-                    Debug.Log("u is " + u);
+                    UnityEngine.Debug.Log("u is " + u);
                 }
             }
         }
@@ -433,7 +437,7 @@ public class GameManager : MonoBehaviour
             GameObject.Find("Player").GetComponent<PlayerController>().input = false;
             GameObject.Find("Player").GetComponent<PlayerController>().delayInput = false;
             yield return new WaitUntil(() => IsAllBoolsTrue(bools) == true);
-            Debug.Log("Input Delay is over.");
+            UnityEngine.Debug.Log("Input Delay is over.");
 
             m_soundManager.noStartAnim = true;
         }
@@ -501,7 +505,7 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.25f);
-        Debug.Log("going to menu");
+        UnityEngine.Debug.Log("going to menu");
         yield return new WaitForSeconds(timeDelay);
         //start the end animation
         m_transitionAnimator.Play("End Transition");
@@ -514,7 +518,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator ResetLvl()
     {
         levelManager.Instance.resetLvl();
-        Debug.Log("reseting lvl");
+        UnityEngine.Debug.Log("reseting lvl");
 
         GameObject.Find("Player").GetComponent<PlayerController>().delayInput = false;
 
@@ -524,6 +528,8 @@ public class GameManager : MonoBehaviour
         //wait for animation to finish + time delay
         yield return new WaitForSeconds(m_transitionAnimator.GetCurrentAnimatorStateInfo(0).length / 2);
         yield return new WaitForSeconds(timeDelay);
+        stopwatch.Stop();
+        DataManager.Instance.AddReset(playerController.moveCounter, stopwatch.ElapsedMilliseconds);
         //reset current lvl
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -533,35 +539,40 @@ public class GameManager : MonoBehaviour
         //progress
         if (PlayerPrefs.GetInt("Progress") == LvlNumber)
         {
-            Debug.Log("increasing progess now");
+            UnityEngine.Debug.Log("increasing progess now");
             PlayerPrefs.SetInt("Progress", LvlNumber + 1);
             PlayerPrefs.Save();
         }
 
-        Debug.Log("progress is " + PlayerPrefs.GetInt("Progress"));
+        UnityEngine.Debug.Log("progress is " + PlayerPrefs.GetInt("Progress"));
 
 
         yield return new WaitForSeconds(1f);
-        Debug.Log("going to next lvl");
+        UnityEngine.Debug.Log("going to next lvl");
         yield return new WaitForSeconds(timeDelay);
         //start the start end animation
         m_transitionAnimator.Play("End Transition");
         //wait for animation to finish
         yield return new WaitForSeconds(m_transitionAnimator.GetCurrentAnimatorStateInfo(0).length);
-
+        DataManager.Instance.AddInput(playerController.moveCounter);
         //load next lvl
-        if (levelsLeft > 0)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        UnityEngine.Debug.Log("LevelCount" + levelManager.Instance.levelCount);
+        stopwatch.Stop();
+        DataManager.Instance.AddTime(stopwatch.ElapsedMilliseconds);
+        if (levelManager.Instance.levelCount != 1)
+            rating.SetActive(true);
         else
-            // todo: show questionnaire
-            miniPXI.SetActive(true);
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        {
+            DataManager.Instance.AddRanking(0, lvlStr);
+            DataManager.Instance.NewLevel();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
 
     }
 
     public void SkipLvl()
     {
-        Debug.Log("Skipping to next lvl");
+        UnityEngine.Debug.Log("Skipping to next lvl");
         //gave progress
         PlayerPrefs.SetInt("Progress", PlayerPrefs.GetInt("Progress") + 1);
         PlayerPrefs.Save();
@@ -597,7 +608,7 @@ public class GameManager : MonoBehaviour
         m_soundManager.noStartAnim = false;
 
         yield return new WaitForSeconds(1f);
-        Debug.Log("going to next lvl");
+        UnityEngine.Debug.Log("going to next lvl");
         yield return new WaitForSeconds(timeDelay);
         //start the start end animation
         m_transitionAnimator.Play("End Transition");

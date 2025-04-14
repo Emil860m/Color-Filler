@@ -3,124 +3,132 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class ratingHandler : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ratingHandler : MonoBehaviour, IEndDragHandler, IDragHandler
 {
     public RectTransform draggable;
 
     public Transform ListHolder;
-    public List<Transform> items;
+    private List<Transform> items;
+    public int itemCount = 0;
+    private GameObject dragInsert;
+    private int insertIndex;
+    public Canvas canvas;
+    public UnityEngine.UI.Button nextLevelButton;
+    public GameManager gm;
+    /*
     public RectTransform LastLeftItem;
     public RectTransform LastRightItem;
     public int LastLeftIndex;
     public int LastRightIndex;
-    
+    */
+    public GameObject draggablePrefab;
+    public GameObject miniPXI;
+
     private float offset = 400;
     private int sizeOffset;
     // Start is called before the first frame update
     void Awake()
     {
-        Image img = new Image();
-        items.Insert(items.Count/2, );
-        sizeOffset = 1200 / (items.Count + 1);
+        //nextLevelButton = transform.Find("nextLevelButton");
+        itemCount = DataManager.Instance.rankings.Count;
+        items = new List<Transform>();
+        sizeOffset = 1200 / (itemCount + 1);
+        for (int i = 0; i < itemCount; i++)
+        {
+            var qObj = Instantiate(draggablePrefab, transform);
+            var text = qObj.transform.Find("levelNumber");
+            text.GetComponent<Text>().text = "Level " + DataManager.Instance.levelNumbers[i];
+            items.Add(qObj.transform);
+        }
+        var drag = Instantiate(draggablePrefab, transform);
+        draggable.transform.Find("levelNumber").GetComponent<Text>().text = "Level " + DataManager.Instance.lvlCount;
+        dragInsert = drag;
+        insertIndex = items.Count/2;
+        items.Insert(items.Count/2, drag.transform);
+        drag.SetActive(false);
+        
         int counter = 0;
         foreach (var item in items)
         {
-            if (item != null)
-                item.transform.position = new Vector3(ListHolder.position.x - offset + sizeOffset * counter, ListHolder.position.y,
-                0);
-            //if (counter == (items.Count / 2) - 1) counter++;
+            item.transform.position = new Vector3(ListHolder.position.x - offset + sizeOffset * counter, ListHolder.position.y, 0);
             counter++;
         }
-        /*
-        int index = -1;
-        int count = 0;
-        foreach (var item in items)
+    }
+    void Start()
+    {
+        nextLevelButton.onClick.AddListener(nextLevel);
+    }
+
+    void nextLevel()
+    {
+        Debug.Log("next level pressed");
+        DataManager.Instance.AddRanking(insertIndex, gm.lvlStr);
+        if (levelManager.Instance.levelsLeft() == 0)
         {
-            if (item == LastLeftItem)
-            {
-                index = count;
-                break;
-            }
-            else count++;
+            miniPXI.SetActive(true);
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            DataManager.Instance.NewLevel();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        LastLeftIndex = index;
-        LastRightIndex = index + 1;
-        */
     }
 
 
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        draggable.position = dragInsert.transform.position; 
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        draggable.anchoredPosition += eventData.delta;
-        /*
+        draggable.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        if (insertIndex > 0 && insertIndex < items.Count - 1)
+        {
+            if (items[insertIndex - 1].position.x > draggable.position.x)
+            {
+                items.Remove(dragInsert.transform);
+                items.Insert(insertIndex - 1, dragInsert.transform);
+                insertIndex--;
+            }
+            else if (items[insertIndex + 1].position.x < draggable.position.x) 
+            {
+
+                items.Remove(dragInsert.transform);
+                items.Insert(insertIndex + 1, dragInsert.transform);
+                insertIndex++;
+            }
+        }
+        else if (insertIndex == 0)
+        {
+            if (items[insertIndex + 1].position.x < draggable.position.x)
+            {
+
+                items.Remove(dragInsert.transform);
+                items.Insert(insertIndex + 1, dragInsert.transform);
+                insertIndex++;
+            }
+        }
+        else if (insertIndex == items.Count - 1)
+        {
+            if (items[insertIndex - 1].position.x > draggable.position.x)
+            {
+                items.Remove(dragInsert.transform);
+                items.Insert(insertIndex - 1, dragInsert.transform);
+                insertIndex--;
+            }
+        }
         int counter = 0;
         foreach (var item in items)
         {
-            if (item != null)
-            {
-                if (item.transform.position.x < draggable.position.x)
-                {
-                    
-                }
-                item.transform.position = new Vector3(ListHolder.position.x - offset + sizeOffset * counter, ListHolder.position.y,
-                    0);
-            }
-            //if (counter == (items.Count / 2) - 1) counter++;
+            item.transform.position = new Vector3(ListHolder.position.x - offset + sizeOffset * counter, ListHolder.position.y, 0);
             counter++;
-        }*/
-        /*
-        if (LastLeftItem != null && draggable.position.x < LastLeftItem.position.x)
-        {
-            LastLeftItem.position = new Vector3(LastLeftItem.position.x + sizeOffset, LastLeftItem.position.y, 0);
-
-            LastRightItem = LastLeftItem;
-            LastRightIndex--;
-            if (LastLeftIndex != 0)
-            {
-                LastLeftItem = items[LastLeftIndex - 1];
-                LastLeftIndex--;
-                
-            }
-            else
-            {
-                LastLeftItem = null;
-            }
-        } 
-        else if (LastRightItem != null && draggable.position.x > LastRightItem.position.x)
-        {
-            LastRightItem.position = new Vector3(LastRightItem.position.x - sizeOffset, LastRightItem.position.y, 0);
-
-            LastLeftItem = LastRightItem;
-            LastLeftIndex++;
-            if (LastRightIndex != items.Count - 1)
-            {
-                LastRightItem = items[LastRightIndex + 1];
-                LastRightIndex++;
-            }
-            else
-            {
-                LastRightItem = null;
-            }
-            Debug.Log(LastRightItem);
-        } 
-        */
+        }
     }
 }

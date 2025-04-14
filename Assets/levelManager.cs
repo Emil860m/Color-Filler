@@ -9,7 +9,7 @@ public class levelManager : MonoBehaviour
 
 
     public List<string> levels = new List<string>();
-    private int levelCount = 0;
+    public int levelCount = 0;
     // Start is called before the first frame update
     private void Awake()
     {
