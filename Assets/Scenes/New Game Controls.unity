@@ -721,8 +721,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 299.2, y: 55.8}
-  m_SizeDelta: {x: 6868.4, y: 4027.21}
+  m_AnchoredPosition: {x: 12, y: 43}
+  m_SizeDelta: {x: 6868.4, y: 3166.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &938285154
 MonoBehaviour:
@@ -744,7 +744,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 4d9045770f3fdf44980b29f84de21641, type: 3}
-    m_FontSize: 280
+    m_FontSize: 90
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -755,18 +755,18 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'MOVE
-
-
-    RESTART
-
-
-    UNDO MOVE
-
-
-    MUTE MUSIC
-
-    MUTE EFFECTS'
+  m_Text: "You are about to take part in a test that collects data for a bachelor's
+    thesis.\r\nPlease read the information below before continuing:\r\n\nThe purpose
+    of this test is to evaluate a game as part of an academic project.\r\n\r\n\r\nDuring
+    the test, we will collect data about your interaction with the game (e.g., time
+    and inputs), and your opinion about the gameplay experience.\r\n\r\n\r\nThe test
+    is completely anonymous. We do not collect any personally identifiable information.\r\n\r\n\r\nBecause
+    the data is anonymous, it is not possible to delete your data after the test,
+    as we cannot trace any data back to you.\r\n\r\n\r\nYour data will only be used
+    for this bachelor\u2019s thesis and will be stored securely.\r\n\r\n\r\nParticipation
+    is voluntary, and you may stop the test at any time without any consequences.\r\n\r\n\r\nBy
+    clicking \"Begin\", you confirm that you have read and understood the information
+    above, and that you agree to participate in the test.\r\n"
 --- !u!222 &938285155
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -837,7 +837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1140579461
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1004,7 +1004,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1412780781
 RectTransform:
   m_ObjectHideFlags: 0
