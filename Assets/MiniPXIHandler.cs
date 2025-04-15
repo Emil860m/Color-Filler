@@ -65,14 +65,24 @@ public class MiniPXIHandler : MonoBehaviour
 
     void OnSubmit()
     {
-        Dictionary<string, int> PXImap = new Dictionary<string, int>();
+        bool allFours = true;
         for (int i = 0; i < questions.Count; i++)
         {
-            PXImap.Add(questions[i].questionText, (int) sliders[i].value);
+            if (((int)sliders[i].value) != 4)
+            {
+                allFours = false;
+            }
         }
-        DataManager.Instance.AddPXI(PXImap);
 
-
-        // TODO: Save to file, analytics backend, etc.
+        if (!allFours)
+        {
+            Dictionary<string, int> PXImap = new Dictionary<string, int>();
+            for (int i = 0; i < questions.Count; i++)
+            {
+                PXImap.Add(questions[i].questionText, (int) sliders[i].value);
+            }
+            DataManager.Instance.AddPXI(PXImap);
+            Application.Quit(0);
+        }
     }
 }

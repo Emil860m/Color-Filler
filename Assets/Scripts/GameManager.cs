@@ -92,9 +92,9 @@ public class GameManager : MonoBehaviour
         lvlTrans = lvl.transform;
         if (lvlStr != null && lvlStr != "")
         {
-
-            int startX = -1;
-            int startY = -1;
+            var r = lvlStr.Split('|');
+            int startX = (r[0].Split(';').Length / 2) - 1;
+            int startY = (r.Length / 2) * -1;
             int xcounter = 2;
             int holeCount = 0;
             int blockCount = 0;

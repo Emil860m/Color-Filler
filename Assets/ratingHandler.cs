@@ -27,7 +27,7 @@ public class ratingHandler : MonoBehaviour, IEndDragHandler, IDragHandler
     public GameObject draggablePrefab;
     public GameObject miniPXI;
 
-    private float offset = 400;
+    private float offset = 800;
     private int sizeOffset;
     // Start is called before the first frame update
     void Awake()
@@ -35,7 +35,7 @@ public class ratingHandler : MonoBehaviour, IEndDragHandler, IDragHandler
         //nextLevelButton = transform.Find("nextLevelButton");
         itemCount = DataManager.Instance.rankings.Count;
         items = new List<Transform>();
-        sizeOffset = 1200 / (itemCount + 1);
+        sizeOffset = 1800 / (itemCount + 1);
         for (int i = 0; i < itemCount; i++)
         {
             var qObj = Instantiate(draggablePrefab, transform);
@@ -83,7 +83,8 @@ public class ratingHandler : MonoBehaviour, IEndDragHandler, IDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        draggable.position = dragInsert.transform.position; 
+        draggable.position = dragInsert.transform.position;
+        nextLevelButton.interactable = true;
     }
 
     public void OnDrag(PointerEventData eventData)
