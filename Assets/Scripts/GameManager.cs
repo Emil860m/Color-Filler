@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     public UnityEngine.Object yellowBlockObj; 
     public UnityEngine.Object greenBlockObj; 
     public UnityEngine.Object blueBlockObj;
+    public UnityEngine.Object dissapearing;
     public GameObject miniPXI;
     public GameObject rating;
     public Stopwatch stopwatch;
@@ -129,8 +130,10 @@ public class GameManager : MonoBehaviour
                             }
                             else
                             {
-                                block = Instantiate(blocks[blockCount]) as GameObject;
-                                blockCount++;
+                                if (cell.Contains("a")) block = Instantiate(redBlockObj) as GameObject;
+                                else if (cell.Contains("b")) block = Instantiate(blueBlockObj) as GameObject;
+                                else if (cell.Contains("c")) block = Instantiate(yellowBlockObj) as GameObject;
+                                else block = Instantiate(greenBlockObj) as GameObject;
                             }
                             block.transform.parent = lvlTrans.transform;
                             block.transform.localPosition = pos;
@@ -140,7 +143,11 @@ public class GameManager : MonoBehaviour
                     }
                     else if (cell.StartsWith("2"))
                     {
-                        // disappearing block
+                        GameObject tile = Instantiate(dissapearing) as GameObject;
+                        tile.transform.parent = lvlTrans.transform;
+                        Vector3 pos = new Vector3(startY + ycounter, startX + xcounter, 0);
+                        tile.transform.localPosition = pos;
+                        transInLvl.Add(tile.transform);
                     }
                     else if (cell.StartsWith("4"))
                     {
@@ -151,8 +158,10 @@ public class GameManager : MonoBehaviour
                         }
                         else
                         {
-                            tile = Instantiate(holes[holeCount]) as GameObject;
-                            holeCount++;
+                            if (cell.Contains("a")) tile = Instantiate(redHoleObj) as GameObject;
+                            else if (cell.Contains("b")) tile = Instantiate(blueHoleObj) as GameObject;
+                            else if (cell.Contains("c")) tile = Instantiate(yellowHoleObj) as GameObject;
+                            else tile = Instantiate(greenHoleObj) as GameObject;
                         }
                         tile.transform.parent = lvlTrans.transform;
                         Vector3 pos = new Vector3(startY + ycounter, startX + xcounter, 0);

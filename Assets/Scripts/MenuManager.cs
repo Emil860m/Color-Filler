@@ -204,11 +204,31 @@ public class MenuManager : MonoBehaviour
     public void NewGame()
     {
         List<string> levels = new List<string>();
-        levels.Add("1p;4p");
-        levels.Add("0;0;0;4p;0|0;1;1;1a;4a|0;1;1b;1c;4b|4c;1;1;1p;1|0;0;0;1;0");
-        levels.Add("0;0;0;4p;0|0;1;1;1a;4a|0;1;1b;1c;4b|4c;1;1;1p;1|1;1;1;1;0");
+        levels.Add("1;1;1;1|1;1;1a;1|1;1;1b;4p|4b;1p;1;4a");
+        levels.Add("0;2;2;1|2;1p;1b;1|2;2;1a;4b|0;4p;4a;2");
+        levels.Add("0;0;1;1;0|1;1;1;1;4c|1;4a;1;1b;4p|1;1a;1c;1;1p|4b;2;1;1;1");
+        levels.Add("2;2;0;4c|1p;1b;1;4b|1a;2;2;1c|4a;4p;1;1");
+        levels.Add("0;0;0;0;0|4p;1;4a;4b;1|2;1p;1;1;0|1;1b;1;1a;1|2;1;1;1;2");
+        levels.Add("1;1;1;1;4b|1;1;1a;1;1p|2;1;1;1c;2|0;1;1;1b;4a|0;4p;4c;2;2");
+        levels.Add("4b;1;1;0;0|1;1;1;0;0|1b;1;2;4p;0|1;1a;1;0;0|4a;1p;0;1;0");
+        levels.Add("2;1;2;0;0|1p;1a;1;1;1|1b;1;1;1;1|1;4p;2;4a;2|4b;1;1;1;2");
+        levels.Add("2;2;2;4c;4p|4b;1;1b;1p;4a|1d;1a;1c;2;2|1;1;0;1;0|4d;1;1;0;0");
+        Shuffle(levels);
         levelManager.Instance.SetLevelStrings(levels);
         StartCoroutine(nameof(NewGameCo));
+    }
+    private static System.Random rng = new System.Random();
+
+    public static void Shuffle<T>(IList<T> list)
+    {
+        int n = list.Count;
+        while (n > 1) {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
     }
     private IEnumerator NewGameCo()
     {
